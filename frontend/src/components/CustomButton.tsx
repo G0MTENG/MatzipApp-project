@@ -7,7 +7,7 @@ import {
   Dimensions,
   View,
 } from 'react-native';
-import {colors} from '../constants';
+import {colors} from '@/constants';
 
 type CustomButtonProps = {
   label: string;
@@ -18,7 +18,7 @@ type CustomButtonProps = {
 
 const deviceHeight = Dimensions.get('screen').height;
 
-function CustomButton({
+export function CustomButton({
   label,
   variant = 'filled',
   size = 'large',
@@ -92,5 +92,3 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 });
-
-export default CustomButton;

@@ -1,13 +1,13 @@
 import React from 'react';
 import {Dimensions, Image, SafeAreaView, StyleSheet, View} from 'react-native';
-import type {AuthStackParamList} from '../../navigations/stack/AuthStackNavigator';
+import type {AuthStackParamList} from '@/navigations';
 import {StackScreenProps} from '@react-navigation/stack';
-import CustomButton from '../../components/CustomButton';
-import {authNavigations} from '../../constants';
+import {CustomButton} from '@/components';
+import {authNavigations} from '@/constants';
 
 type AuthHomeScreenProps = StackScreenProps<AuthStackParamList, 'AuthHome'>;
 
-function AuthHomeScreen({navigation}: AuthHomeScreenProps) {
+export function AuthHomeScreen({navigation}: AuthHomeScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
@@ -51,5 +51,3 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 });
-
-export default AuthHomeScreen;

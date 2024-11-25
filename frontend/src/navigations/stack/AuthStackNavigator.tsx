@@ -1,9 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import AuthHomeScreen from '../../screens/auth/AuthHomeScreen';
-import LoginScreen from '../../screens/auth/LoginScreen';
 import {authNavigations} from '../../constants';
-import SignUpScreen from '../../screens/auth/SignUpScreen';
+import {AuthHomeScreen, LoginScreen, SignUpScreen} from '@/screens';
 
 export type AuthStackParamList = {
   [authNavigations.AUTH_HOME]: undefined;
@@ -11,7 +9,7 @@ export type AuthStackParamList = {
   [authNavigations.SIGNUP]: undefined;
 };
 
-export default function AuthStackNavigator() {
+export function AuthStackNavigator() {
   const Stack = createStackNavigator<AuthStackParamList>();
   return (
     <Stack.Navigator
