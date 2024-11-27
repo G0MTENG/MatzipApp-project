@@ -1,15 +1,13 @@
 import {CustomButton, InputField} from '@/components';
-import {useForm} from '@/hooks';
-import {validateLogin} from '@/utils';
-import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-
-export type UserInfomation = {
-  email: string;
-  password: string;
-};
+import {useAuth, useForm} from '@/hooks';
+import {UserInfomation, validateLogin} from '@/utils';
+import React, {useRef} from 'react';
+import {SafeAreaView, StyleSheet, TextInput, View} from 'react-native';
 
 export function LoginScreen() {
+  const {loginMutation} = useAuth();
+  const passwordRef = useRef<TextInput | null>(null);
+
   const formState = useForm<UserInfomation>({
     initialValue: {
       email: '',
@@ -19,20 +17,27 @@ export function LoginScreen() {
   });
 
   const handleSubmit = () => {
-    console.log(formState.values);
+    loginMutation.mutate(formState.values);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
         <InputField
+          autoFocus
           placeholder="이메일"
           inputMode="email"
+          returnKeyType="next"
+          blurOnSubmit={false}
+          onSubmitEditing={() => passwordRef.current?.focus()}
           {...formState.getInputProps('email')}
         />
         <InputField
+          ref={passwordRef}
           placeholder="비밀번호"
           secureTextEntry
+          returnKeyType="join"
+          onSubmitEditing={() => handleSubmit()}
           {...formState.getInputProps('password')}
         />
         <CustomButton

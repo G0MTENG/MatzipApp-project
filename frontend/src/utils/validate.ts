@@ -1,4 +1,13 @@
-import {UserInfomation} from '@/screens';
+export type UserInfomation = {
+  email: string;
+  password: string;
+};
+
+export type UserSignUp = {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+};
 
 export const validateLogin = ({email, password}: UserInfomation) => {
   const errors = {
@@ -12,6 +21,32 @@ export const validateLogin = ({email, password}: UserInfomation) => {
 
   if (!(password.length >= 8 && password.length < 20)) {
     errors.password = '비밀번호는 8~20자 사이로 입력해주세요.';
+  }
+
+  return errors;
+};
+
+export const validateSignUp = ({
+  email,
+  password,
+  passwordConfirm,
+}: UserSignUp) => {
+  const errors = {
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  };
+
+  if (!/^[^\s@]+@[^\s@]+\.[^s@]+$/.test(email)) {
+    errors.email = '올바른 이메일 형식이 아닙니다.';
+  }
+
+  if (!(password.length >= 8 && password.length < 20)) {
+    errors.password = '비밀번호는 8~20자 사이로 입력해주세요.';
+  }
+
+  if (password !== passwordConfirm) {
+    errors.passwordConfirm = '비밀번호와 일치하지 않습니다.';
   }
 
   return errors;
