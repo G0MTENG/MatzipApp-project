@@ -5,7 +5,10 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {CustomButton} from '@/components';
 import {authNavigations} from '@/constants';
 
-type AuthHomeScreenProps = StackScreenProps<AuthStackParamList, 'AuthHome'>;
+export type AuthHomeScreenProps = StackScreenProps<
+  AuthStackParamList,
+  'AuthHome'
+>;
 
 export function AuthHomeScreen({navigation}: AuthHomeScreenProps) {
   return (

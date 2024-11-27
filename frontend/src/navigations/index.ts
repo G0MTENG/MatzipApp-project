@@ -6,3 +6,4 @@ export * from './root/RootNavigator';
 
 // stack
 export * from './stack/AuthStackNavigator';
+export * from './stack/MapStackNavigator';
