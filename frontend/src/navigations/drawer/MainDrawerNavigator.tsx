@@ -2,13 +2,45 @@ import {CalendarHomeScreen, FeedHomeScreen} from '@/screens';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
 import {MapStackNavgator, MapStackParamList} from '../stack/MapStackNavigator';
-import {MainDrawerNavigations} from '@/constants';
-import {NavigatorScreenParams} from '@react-navigation/native';
+import {colors, mainDrawerNavigations} from '@/constants';
+import {NavigatorScreenParams, RouteProp} from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Dimensions} from 'react-native';
+import {CustomDrawerContent} from './CustomDrawerContent';
 
 export type DrawerParamList = {
-  [MainDrawerNavigations.HOME]: NavigatorScreenParams<MapStackParamList>;
-  [MainDrawerNavigations.FEED]: undefined;
-  [MainDrawerNavigations.CALENDAR]: undefined;
+  [mainDrawerNavigations.HOME]: NavigatorScreenParams<MapStackParamList>;
+  [mainDrawerNavigations.FEED]: undefined;
+  [mainDrawerNavigations.CALENDAR]: undefined;
+};
+
+const DrawerIcons = (
+  route: RouteProp<DrawerParamList, keyof DrawerParamList>,
+  focusted: boolean,
+) => {
+  let iconName = '';
+
+  switch (route.name) {
+    case mainDrawerNavigations.HOME: {
+      iconName = 'location-on';
+      break;
+    }
+    case mainDrawerNavigations.FEED: {
+      iconName = 'book';
+      break;
+    }
+    case mainDrawerNavigations.CALENDAR: {
+      iconName = 'event-note';
+      break;
+    }
+  }
+  return (
+    <MaterialIcons
+      name={iconName}
+      color={focusted ? colors.BLACK : colors.GRAY_500}
+      size={25}
+    />
+  );
 };
 
 export function MainDrawerNavigator() {
@@ -16,26 +48,40 @@ export function MainDrawerNavigator() {
 
   return (
     <Drawer.Navigator
-      screenOptions={{
+      drawerContent={CustomDrawerContent}
+      screenOptions={({route}) => ({
         headerShown: false,
         drawerType: 'front',
-      }}>
+        drawerIcon: ({focused}) => DrawerIcons(route, focused),
+        drawerActiveTintColor: colors.BLACK,
+        drawerInactiveTintColor: colors.GRAY_500,
+        drawerActiveBackgroundColor: colors.PINK_200,
+        drawerInactiveBackgroundColor: colors.GRAY_100,
+        drawerStyle: {
+          width: Dimensions.get('screen').width * 0.6,
+          backgroundColor: colors.WHITE,
+        },
+        drawerLabelStyle: {
+          fontWeight: '600',
+        },
+      })}>
       <Drawer.Screen
-        name={MainDrawerNavigations.HOME}
+        name={mainDrawerNavigations.HOME}
         component={MapStackNavgator}
         options={{
           title: '홈',
+          swipeEnabled: false,
         }}
       />
       <Drawer.Screen
-        name={MainDrawerNavigations.FEED}
+        name={mainDrawerNavigations.FEED}
         component={FeedHomeScreen}
         options={{
           title: '피드',
         }}
       />
       <Drawer.Screen
-        name={MainDrawerNavigations.CALENDAR}
+        name={mainDrawerNavigations.CALENDAR}
         component={CalendarHomeScreen}
         options={{
           title: '캘린더',

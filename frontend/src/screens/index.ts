@@ -11,3 +11,4 @@ export * from './feed/FeedHomeScreen';
 
 // map
 export * from './map/MapHomeScreen';
+export * from './map/AddPostScreen';

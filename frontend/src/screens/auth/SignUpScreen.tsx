@@ -20,6 +20,7 @@ export function SignUpScreen() {
 
   const handleSubmit = () => {
     const {email, password} = formState.values;
+    console.log('email', email, 'password', password);
     signupMutation.mutate(
       {email, password},
       {

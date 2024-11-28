@@ -7,3 +7,8 @@ export const authQueryKeys = {
 export const storageKeys = {
   REFRESH_TOKEN: 'refreshToken',
 } as const;
+
+export const markerQueryKeys = {
+  GET_MARKERS: 'getMarkers',
+  MARKER: 'marker',
+} as const;

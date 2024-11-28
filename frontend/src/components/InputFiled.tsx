@@ -2,7 +2,6 @@ import {colors} from '@/constants';
 import React, {forwardRef, useRef} from 'react';
 import {
   Dimensions,
-  Keyboard,
   Pressable,
   StyleSheet,
   Text,
@@ -10,7 +9,7 @@ import {
   TextInputProps,
   View,
 } from 'react-native';
-import type {ForwardedRef} from 'react';
+import type {ForwardedRef, ReactNode} from 'react';
 import {mergeRefs} from '@/utils/common';
 
 const deviceHeight = Dimensions.get('screen').height;
@@ -19,41 +18,44 @@ interface InputFieldProps extends TextInputProps {
   disabled?: boolean;
   error?: string;
   touched?: boolean;
+  icon?: ReactNode;
 }
 
 export const InputField = forwardRef(
   (
-    {disabled = false, error, touched, ...props}: InputFieldProps,
-    ref: ForwardedRef<TextInput>,
+    {disabled = false, error, touched, icon = null, ...props}: InputFieldProps,
+    ref?: ForwardedRef<TextInput>,
   ) => {
     const innerRef = useRef<TextInput | null>(null);
 
-    const handleClickInput = () => {
+    const handlePressInput = () => {
       innerRef.current?.focus();
     };
 
     return (
-      <Pressable onPress={handleClickInput}>
+      <Pressable onPress={handlePressInput}>
         <View
           style={[
             styles.container,
             disabled && styles.disabled,
+            props.multiline && styles.multiLine,
             touched && Boolean(error) && styles.inputError,
           ]}>
-          <TextInput
-            ref={ref ? mergeRefs(innerRef, ref) : innerRef}
-            editable={!disabled}
-            placeholderTextColor={colors.GRAY_500}
-            style={[styles.input, disabled && styles.disabled]}
-            autoCapitalize="none"
-            spellCheck={false}
-            autoCorrect={false}
-            blurOnSubmit={false}
-            onSubmitEditing={() => Keyboard.dismiss()}
-            {...props}
-          />
+          <View style={Boolean(icon) && styles.innerContainer}>
+            {icon}
+            <TextInput
+              ref={ref ? mergeRefs(innerRef, ref) : innerRef}
+              editable={!disabled}
+              placeholderTextColor={colors.GRAY_500}
+              style={[styles.input, disabled && styles.disabled]}
+              autoCapitalize="none"
+              spellCheck={false}
+              autoCorrect={false}
+              {...props}
+            />
+          </View>
           {touched && Boolean(error) && (
-            <Text style={styles.errorText}>{error}</Text>
+            <Text style={styles.error}>{error}</Text>
           )}
         </View>
       </Pressable>
@@ -65,22 +67,30 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderColor: colors.GRAY_200,
-    padding: deviceHeight > 700 ? 12 : 10,
+    padding: deviceHeight > 700 ? 15 : 10,
+  },
+  multiLine: {
+    paddingBottom: deviceHeight > 700 ? 45 : 30,
   },
   input: {
     fontSize: 16,
     color: colors.BLACK,
     padding: 0,
   },
+  innerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
   disabled: {
-    backgroundColor: colors.GRAY_500,
+    backgroundColor: colors.GRAY_200,
     color: colors.GRAY_700,
   },
   inputError: {
     borderWidth: 1,
     borderColor: colors.RED_300,
   },
-  errorText: {
+  error: {
     color: colors.RED_500,
     fontSize: 12,
     paddingTop: 5,

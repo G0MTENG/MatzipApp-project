@@ -1,13 +1,14 @@
 import React from 'react';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {DrawerParamList, MapStackParamList} from '@/navigations';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {colors} from '@/constants';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-type Navigation = CompositeNavigationProp<
+export type Navigation = CompositeNavigationProp<
   StackNavigationProp<MapStackParamList>,
   DrawerNavigationProp<DrawerParamList>
 >;
@@ -19,7 +20,7 @@ export const DrawerButton = () => {
     <Pressable
       style={[styles.drawerButton, {top: inset.top || 20}]}
       onPress={navigation.openDrawer}>
-      <Text>서랍</Text>
+      <Ionicons name="menu-outline" color={colors.WHITE} size={25} />
     </Pressable>
   );
 };

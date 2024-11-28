@@ -6,9 +6,10 @@ export const authNavigations = {
 
 export const mapNavigations = {
   MAP_HOME: 'MapHome',
+  ADD_POST: 'AddPost',
 } as const;
 
-export const MainDrawerNavigations = {
+export const mainDrawerNavigations = {
   HOME: 'Home',
   FEED: 'Feed',
   CALENDAR: 'Calendar',
