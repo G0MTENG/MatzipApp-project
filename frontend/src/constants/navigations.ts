@@ -14,3 +14,10 @@ export const mainDrawerNavigations = {
   FEED: 'Feed',
   CALENDAR: 'Calendar',
 } as const;
+
+export const feedNavigations = {
+  FEED_HOME: 'FeedHome',
+  FEED_DETAIL: 'FeedDetail',
+  SEARCH: 'Search',
+  FAVORITE: 'Favorite',
+} as const;

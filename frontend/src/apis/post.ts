@@ -16,3 +16,17 @@ export const createPost = async (
 
   return response.data;
 };
+
+export type ResponsiveSinglePost = ResponsePost & {
+  isFavorite: boolean;
+};
+export const getPost = async (id: number): Promise<ResponsiveSinglePost> => {
+  const {data} = await axiosInstance.get(`/posts/${id}`);
+
+  return data;
+};
+
+export const getPosts = async (page: number = 1): Promise<ResponsePost[]> => {
+  const {data} = await axiosInstance.get(`/posts/my?page=${page}`);
+  return data;
+};

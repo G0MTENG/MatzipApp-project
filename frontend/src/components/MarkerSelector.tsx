@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {CustomMarker} from './CustomMarker';
+import {MarkerView} from './CustomMarker';
 import {MarkerColor} from '@/types';
 import {colors} from '@/constants';
 
@@ -34,12 +34,13 @@ export const MarkerSelector = ({
         <View style={styles.markerInputScroll}>
           {markerColors.map(color => (
             <Pressable
+              key={color}
               style={[
                 styles.markerBox,
                 color === markerColor && styles.pressedMarker,
               ]}
               onPress={() => handleChangeMarker(color)}>
-              <CustomMarker score={score} color={color} />
+              <MarkerView score={score} color={color} />
             </Pressable>
           ))}
         </View>

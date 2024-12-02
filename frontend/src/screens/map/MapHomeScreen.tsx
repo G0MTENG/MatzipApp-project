@@ -1,4 +1,9 @@
-import {DrawerButton, CustomMarker, Navigation} from '@/components';
+import {
+  DrawerButton,
+  CustomMarker,
+  Navigation,
+  MarkerModal,
+} from '@/components';
 import React, {useRef, useState} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import MapView, {
@@ -9,12 +14,12 @@ import MapView, {
 } from 'react-native-maps';
 import {alertsOptions, colors, mapNavigations} from '@/constants';
 import {useUserLocation} from '@/hooks/useUserLocation';
-import {usePermission} from '@/hooks';
+import {useModal, usePermission} from '@/hooks';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {mapStyle} from '@/style';
 import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useGetMarkers} from '@/hooks/queries/useGetMarkers';
+import {useGetMarkers} from '@/hooks';
 
 export function MapHomeScreen() {
   const {userLocation, isUserLocationError} = useUserLocation();
@@ -23,10 +28,28 @@ export function MapHomeScreen() {
   const mapRef = useRef<MapView>(null);
   const [selectLocation, setSelectLocation] = useState<LatLng | null>(null);
   const {data: markers = []} = useGetMarkers();
+  const [markerId, setMarkerId] = useState<number | null>(null);
+  const modalState = useModal();
+
+  const moveMapView = (coordinate: LatLng) => {
+    mapRef.current?.animateToRegion(
+      {
+        ...coordinate,
+        longitudeDelta: 0.0922,
+        latitudeDelta: 0.0421,
+      },
+      1000,
+    );
+  };
+
+  const handlePressMarker = (coordinate: LatLng, id: number) => {
+    moveMapView(coordinate);
+    setMarkerId(id);
+    modalState.open();
+  };
 
   const handleLongPressMapView = ({nativeEvent}: LongPressEvent) => {
     setSelectLocation(nativeEvent.coordinate);
-    console.log('coordinate', nativeEvent.coordinate);
   };
 
   const handlePressUserLocation = () => {
@@ -39,14 +62,7 @@ export function MapHomeScreen() {
       return;
     }
 
-    mapRef.current?.animateToRegion(
-      {
-        ...userLocation,
-        longitudeDelta: 0.0922,
-        latitudeDelta: 0.0421,
-      },
-      1000,
-    );
+    moveMapView(userLocation);
   };
 
   const handlePressAddPost = () => {
@@ -66,6 +82,14 @@ export function MapHomeScreen() {
   return (
     <>
       <MapView
+        region={{
+          ...(userLocation ?? {
+            latitude: 124.5,
+            longitude: 33.0,
+          }),
+          longitudeDelta: 0.0922,
+          latitudeDelta: 0.0421,
+        }}
         ref={mapRef}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
@@ -80,6 +104,7 @@ export function MapHomeScreen() {
             color={color}
             score={score}
             coordinate={coordinate}
+            onPress={() => handlePressMarker(coordinate, id)}
           />
         ))}
         {selectLocation && (
@@ -97,6 +122,12 @@ export function MapHomeScreen() {
           <MaterialIcons name="gps-fixed" color={colors.WHITE} size={25} />
         </Pressable>
       </View>
+
+      <MarkerModal
+        close={modalState.close}
+        isVisible={modalState.state}
+        markerId={markerId}
+      />
     </>
   );
 }

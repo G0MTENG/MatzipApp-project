@@ -13,6 +13,7 @@ export type MapStackParamList = {
 
 export function MapStackNavgator() {
   const Stack = createStackNavigator<MapStackParamList>();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -27,6 +28,12 @@ export function MapStackNavgator() {
           fontSize: 15,
         },
         headerTintColor: 'black',
+        headerLeftContainerStyle: {
+          paddingLeft: 20,
+        },
+        headerRightContainerStyle: {
+          paddingRight: 20,
+        },
       }}>
       <Stack.Screen
         name={mapNavigations.MAP_HOME}

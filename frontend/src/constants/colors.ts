@@ -5,6 +5,7 @@ export const colors = {
   PINK_400: '#EC87A5',
   PINK_200: '#FAE2E9',
   BLUE_400: '#B4E0FF',
+  BLUE_500: '#0D8AFF',
   YELLOW_400: '#FFE594',
   GREEN_400: '#CCE6BA',
   GRAY_700: '#575757',
